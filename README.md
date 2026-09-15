@@ -5,12 +5,26 @@
 ## Sử dụng ngay trên máy này
 
 1. Mở **Start BEATLOOM.command** bằng cách nhấp đúp.
-2. Truy cập **http://localhost:3000**.
+2. Trình mở nhanh đưa bạn đến **https://hngnh3110.github.io/BeatLoom/** và kết nối thư viện trên máy tính. Có thể mở bản cục bộ tại **http://127.0.0.1:3000**.
 3. Bấm **Thêm nhạc** hoặc kéo file vào vùng tải lên.
 
 Ứng dụng chạy nền sau khi đóng cửa sổ Terminal. Mở **Stop BEATLOOM.command** để dừng. Sau khi khởi động lại máy, mở lại **Start BEATLOOM.command**. Trình mở nhanh dùng Node.js có sẵn hoặc môi trường Node.js đi kèm Codex trên máy hiện tại.
 
-Thư viện ban đầu trống; các file âm thanh dùng kiểm thử được tạo trong thư mục tạm và tự xóa, không đưa vào thư viện thật.
+## GitHub Pages + máy tính hiện tại
+
+Giao diện chạy tại [BEATLOOM](https://hngnh3110.github.io/BeatLoom/). Máy chủ Node.js, SQLite, file nhạc, yt-dlp và FFmpeg chạy trên máy tính này ở `127.0.0.1:3000`.
+
+- Mở **Start BEATLOOM.command** mỗi khi cần sử dụng. Giữ máy tính thức và có mạng để chuyển đổi YouTube.
+- Lần đầu vào trang, bấm **Kết nối máy tính**. Nếu Chrome hỏi quyền truy cập mạng cục bộ, chọn **Cho phép**. Nếu quyền bị từ chối, cấp lại trong cài đặt trang hoặc dùng **Mở bản trên máy**.
+- Máy chủ chỉ lắng nghe địa chỉ loopback; trang trên điện thoại hoặc máy khác không kết nối được tới máy này. Không cần Render hoặc gói máy chủ trả phí.
+- Nhạc và danh sách phát nằm trong `uploads/` và `data/`. Không có chức năng đồng bộ lên GitHub; giữ bản sao các thư mục này để sao lưu.
+- Khóa kết nối được tạo tự động trong `.logs/connection.key` (chỉ chủ máy đọc/ghi). Khóa không được đưa vào Git hoặc cấu hình Pages. Trang cất khóa trong phiên trình duyệt; phiên mới cần kết nối lại.
+- API yêu cầu khóa; CORS chỉ cho phép nguồn GitHub Pages đã cấu hình. File nhạc dùng liên kết ký có hạn 24 giờ, hỗ trợ tua và tải FLAC.
+- Khi máy chủ tắt, giao diện hiện hướng dẫn kết nối lại.
+
+Chạy `npm run build:pages` để tạo `.pages/`. Workflow `.github/workflows/deploy.yml` tự xuất bản thư mục này khi đẩy `main`. Mọi đường dẫn giao diện đều tương đối để chạy được dưới `/BeatLoom/`; chỉ mã giao diện được xuất bản. Không thêm file nhạc, cơ sở dữ liệu hoặc khóa vào `public/`.
+
+Các file âm thanh kiểm thử được tạo trong thư mục tạm và tự xóa, không đưa vào thư viện thật.
 
 ## Tính năng
 

@@ -360,3 +360,10 @@ main{height:100%;padding:0 18px 25px}
 .youtube-job-actions .button{font-size:10px;height:29px;padding:0 11px}
 .youtube-background{margin-top:17px;font-size:10px}
 @media(max-width:700px){.youtube-dialog{padding:20px}.youtube-form-footer{align-items:flex-start;flex-direction:column;gap:12px}.youtube-form-footer .button{width:100%}.youtube-jobs{max-height:260px}.youtube-job-state{font-size:8px}}
+.connection-status{border:1px solid #555;border-radius:20px;background:#262626;color:#ddd;padding:7px 11px;font:inherit;font-size:10px;cursor:pointer;white-space:nowrap}
+.connection-status.connected{border-color:#444;color:#aaa}
+.connection-panel{margin:0 0 24px;padding:22px;border:1px solid #555;border-radius:16px;background:#242424}
+.connection-panel h2{font-size:18px;margin:0 0 8px}
+.connection-panel p{font-size:12px;color:#bbb;line-height:1.8;max-width:700px}
+.connection-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+@media(max-width:700px){.connection-status{font-size:9px;padding:6px 8px}.connection-panel{padding:16px}.connection-actions .button{font-size:10px}.topbar-end .local-badge{display:none}}

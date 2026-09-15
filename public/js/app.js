@@ -51,12 +51,7 @@
     const item = document.createElement('div'); item.className = `toast${error ? ' error' : ''}`;
     item.textContent = message; $('toasts').append(item); setTimeout(() => item.remove(), error ? 6500 : 3500);
   }
-  async function api(url, method = 'GET', body) {
-    const response = await fetch(url, { method, headers: body ? {'Content-Type':'application/json'} : {}, ...(body ? {body:JSON.stringify(body)} : {}) });
-    const data = await response.json();
-    if (!response.ok) throw new Error(data.error || 'Không thể thực hiện yêu cầu.');
-    return data;
-  }
+  const api = (...args) => window.Beatloom.api(...args);
   const safely = fn => (...args) => Promise.resolve().then(() => fn(...args)).catch(error => toast(error.message, true));
   function savePlayer() {
     try { localStorage.setItem('beatloom-player', JSON.stringify({ volume:audio.volume, muted:audio.muted, shuffle, repeat, currentId, queue, baseQueue, position, time:audio.currentTime || 0 })); } catch { /* Private mode may disable persistence. */ }
@@ -193,7 +188,9 @@
   async function playAt(index) {
     const song = songById(queue[index]); if (!song) return;
     const request = ++playRequest; position = index; currentId = song.id; restoreTime = null;
-    audio.src = `/uploads/${encodeURIComponent(song.filename)}`; $('seek').value = 0; $('seek').style.setProperty('--progress','0%'); $('elapsed').textContent = '0:00'; $('duration').textContent = time(song.duration);
+    const media = await window.Beatloom.mediaUrl(song);
+    if (request !== playRequest) return;
+    audio.src = media; $('seek').value = 0; $('seek').style.setProperty('--progress','0%'); $('elapsed').textContent = '0:00'; $('duration').textContent = time(song.duration);
     renderTracks(); renderNow(); renderQueue(); savePlayer();
     try {
       await prepareAudio();
@@ -331,15 +328,18 @@
   window.addEventListener('dragover',event=>{if(event.dataTransfer.types.includes('Files'))event.preventDefault();});
   window.addEventListener('drop',event=>{if(event.dataTransfer.types.includes('Files'))event.preventDefault();});
   function uploadUI(active,percent=0){uploading=active;$('upload-progress').hidden=!active;$('upload-progress').value=percent;$('dropzone').disabled=active;document.querySelectorAll('[data-upload]').forEach(el=>el.disabled=active);$('upload-title').innerHTML=active?(percent===100?'Đang đọc thông tin bài hát…':`Đang tải nhạc lên… ${percent}%`):'Kéo thả nhạc vào đây <span>hoặc chọn từ thiết bị</span>';$('upload-detail').textContent=active?'Vui lòng giữ trang mở đến khi xử lý hoàn tất.':'MP3, FLAC, WAV, OGG, M4A, AAC, OPUS, WEBM · Tối đa 200 MB/file · 50 file/lần';}
-  function uploadFiles(files){
+  async function uploadFiles(files){
     if(uploading){toast('Đang xử lý lượt tải trước. Vui lòng đợi.');return;}
     if(files.length>50){toast('Chọn tối đa 50 file mỗi lần.',true);return;}
     const invalid=files.find(f=>!(/\.(mp3|flac|wav|ogg|m4a|aac|opus|webm)$/i.test(f.name))||f.size>200*1024*1024||f.size===0);
     if(invalid){toast(`“${invalid.name}” không hợp lệ. Chọn file âm thanh được hỗ trợ, dung lượng từ 1 byte đến 200 MB.`,true);return;}
-    const form=new FormData();files.forEach(file=>form.append('files',file));const xhr=new XMLHttpRequest();xhr.open('POST','/api/songs/upload');xhr.timeout=30*60*1000;uploadUI(true);
-    xhr.upload.onprogress=e=>{if(e.lengthComputable)uploadUI(true,Math.round(e.loaded/e.total*100));};
-    xhr.onload=async()=>{uploadUI(false);try{const result=JSON.parse(xhr.responseText);if(xhr.status>=400)throw new Error(result.error||'Tải lên thất bại.');await refresh();toast(`Đã thêm ${result.uploaded.length} bài hát${result.errors.length?` · ${result.errors.length} file bị hỏng hoặc không đọc được`:'.'}`,!!result.errors.length);}catch(error){toast(error.message,true);}};
-    xhr.onerror=xhr.ontimeout=()=>{uploadUI(false);toast('Mất kết nối hoặc quá thời gian tải. Vui lòng kiểm tra thư viện trước khi thử lại.',true);};xhr.send(form);
+    uploadUI(true);
+    try {
+      const result = await window.Beatloom.upload(files, percent => uploadUI(true, percent));
+      await refresh();
+      toast(`Đã thêm ${result.uploaded.length} bài hát${result.errors.length ? ` · ${result.errors.length} file bị hỏng hoặc không đọc được` : '.'}`, !!result.errors.length);
+    } catch (error) { toast(error.message, true); }
+    finally { uploadUI(false); }
   }
   $('menu-button').onclick=()=>{$('sidebar').classList.toggle('open');};
   document.addEventListener('click',event=>{if(!$('sidebar').contains(event.target)&&!$('menu-button').contains(event.target))$('sidebar').classList.remove('open');});
@@ -368,8 +368,8 @@
     audio.volume=typeof preferences.volume==='number'?Math.max(0,Math.min(1,preferences.volume)):.75;audio.muted=preferences.muted===true;shuffle=preferences.shuffle===true;repeat=['off','all','one'].includes(preferences.repeat)?preferences.repeat:'off';
     try{await refresh();
       const restored=songById(preferences.currentId);
-      if(restored){baseQueue=Array.isArray(preferences.baseQueue)?[...new Set(preferences.baseQueue)].filter(songById):[restored.id];queue=Array.isArray(preferences.queue)?[...new Set(preferences.queue)].filter(songById):[restored.id];if(!queue.includes(restored.id))queue.unshift(restored.id);if(!baseQueue.includes(restored.id))baseQueue.unshift(restored.id);currentId=restored.id;position=queue.indexOf(currentId);restoreTime=Number.isFinite(preferences.time)?Math.max(0,preferences.time):0;audio.src=`/uploads/${encodeURIComponent(restored.filename)}`;renderNow();renderTracks();renderQueue();}
-    }catch(error){toast('Không thể tải thư viện. Hãy tải lại trang khi máy chủ sẵn sàng.',true);}
+      if(restored){baseQueue=Array.isArray(preferences.baseQueue)?[...new Set(preferences.baseQueue)].filter(songById):[restored.id];queue=Array.isArray(preferences.queue)?[...new Set(preferences.queue)].filter(songById):[restored.id];if(!queue.includes(restored.id))queue.unshift(restored.id);if(!baseQueue.includes(restored.id))baseQueue.unshift(restored.id);currentId=restored.id;position=queue.indexOf(currentId);restoreTime=Number.isFinite(preferences.time)?Math.max(0,preferences.time):0;audio.src=await window.Beatloom.mediaUrl(restored);renderNow();renderTracks();renderQueue();}
+    }catch(error){toast(error.message,true);}
     $('main').setAttribute('aria-busy','false');
     renderNow();
   }

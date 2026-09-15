@@ -21,7 +21,7 @@ BEATLOOM_HEALTH=$(/usr/bin/curl -fsS --max-time 2 "$BEATLOOM_URL/api/health" 2>/
 case "$BEATLOOM_HEALTH" in
   *'"app":"BEATLOOM"'*)
     echo "BEATLOOM đang chạy: $BEATLOOM_URL"
-    if [ "${BEATLOOM_NO_OPEN:-0}" != 1 ]; then /usr/bin/open "$BEATLOOM_URL"; fi
+    if [ "${BEATLOOM_NO_OPEN:-0}" != 1 ]; then /usr/bin/open "$BEATLOOM_URL/connect"; fi
     exit 0
     ;;
 esac
@@ -51,7 +51,7 @@ while [ "$BEATLOOM_ATTEMPT" -lt 25 ]; do
   case "$BEATLOOM_HEALTH" in
     *'"app":"BEATLOOM"'*)
       echo "BEATLOOM đã sẵn sàng: $BEATLOOM_URL"
-      if [ "${BEATLOOM_NO_OPEN:-0}" != 1 ]; then /usr/bin/open "$BEATLOOM_URL"; fi
+      if [ "${BEATLOOM_NO_OPEN:-0}" != 1 ]; then /usr/bin/open "$BEATLOOM_URL/connect"; fi
       exit 0
       ;;
   esac
