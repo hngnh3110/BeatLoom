@@ -17,7 +17,7 @@
   }
   receivePairing();
   window.addEventListener('hashchange', () => { if (receivePairing()) location.reload(); });
-  const unavailable = 'Mở Start BEATLOOM.command trên máy tính này, rồi bấm Kết nối máy tính. Nếu trình duyệt hỏi quyền truy cập mạng cục bộ, hãy chọn Cho phép.';
+  const unavailable = 'Mở Start BEATLOOM.command trên máy tính này, rồi bấm Kết nối máy tính. Nếu dùng Safari, bấm Mở bản trên máy. Với Chrome, chọn Cho phép nếu trình duyệt hỏi quyền truy cập mạng cục bộ.';
   function status(connected, message = '') {
     $('connection-panel').hidden = connected;
     $('connection-message').textContent = message || unavailable;
@@ -36,7 +36,7 @@
     await ready;
     let response;
     try {
-      response = await fetch(new URL(route, base), { method, headers: { ...headers(), ...(body ? { 'Content-Type': 'application/json' } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}), signal: AbortSignal.timeout(30000), targetAddressSpace: 'loopback' });
+      response = await fetch(new URL(route, base), { method, headers: { ...headers(), ...(body ? { 'Content-Type': 'application/json' } : {}) }, ...(body ? { body: JSON.stringify(body) } : {}), signal: AbortSignal.timeout(30000) });
     } catch {
       status(false);
       throw new Error('Chưa kết nối được máy chủ BEATLOOM trên máy tính này.');

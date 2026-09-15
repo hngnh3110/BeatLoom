@@ -5,7 +5,7 @@
 ## Sử dụng ngay trên máy này
 
 1. Mở **Start BEATLOOM.command** bằng cách nhấp đúp.
-2. Trình mở nhanh đưa bạn đến **https://hngnh3110.github.io/BeatLoom/** và kết nối thư viện trên máy tính. Có thể mở bản cục bộ tại **http://127.0.0.1:3000**.
+2. Trình mở nhanh đưa bạn đến **http://127.0.0.1:3000** để sử dụng trực tiếp trên máy, bao gồm Safari. Trang **https://hngnh3110.github.io/BeatLoom/** vẫn có nút kết nối máy tính nếu trình duyệt cho phép.
 3. Bấm **Thêm nhạc** hoặc kéo file vào vùng tải lên.
 
 Ứng dụng chạy nền sau khi đóng cửa sổ Terminal. Mở **Stop BEATLOOM.command** để dừng. Sau khi khởi động lại máy, mở lại **Start BEATLOOM.command**. Trình mở nhanh dùng Node.js có sẵn hoặc môi trường Node.js đi kèm Codex trên máy hiện tại.
