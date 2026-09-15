@@ -1,0 +1,14 @@
+node_modules/
+uploads/*
+!uploads/.gitkeep
+data/*.db
+data/*.db-*
+!data/.gitkeep
+.DS_Store
+
+.backups/
+.logs/
+.test-results/
+
+.tools/
+.imports/
