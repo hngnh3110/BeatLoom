@@ -135,3 +135,6 @@ Các bài kiểm thử dùng thư mục dữ liệu và cổng tạm, không tha
 | PUT | `/api/playlists/:id/reorder` | Thay thứ tự bằng toàn bộ `{songIds: [...]}` |
 
 Có thể dùng `DATA_DIR` và `UPLOAD_DIR` để cấu hình vị trí dữ liệu. Việc ghi metadata là đồng bộ qua SQLite; xử lý playlist hàng loạt và đổi thứ tự được thực hiện trong transaction.
+
+# BeatLoom
+Web nghe nhạc, đề phòng trường hợp nhạc đã bị ẩn
