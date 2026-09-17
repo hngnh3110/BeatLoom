@@ -5,7 +5,7 @@
 <meta name="theme-color" content="#141414"><meta name="description" content="BEATLOOM — Không gian âm nhạc của riêng bạn.">
 <title>BEATLOOM</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='18' fill='%23dedede'/%3E%3Cpath d='M17 38V26m10 22V16m10 27V21m10 17V26' stroke='%23141414' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="./css/style.css?v=beatloom-bridge-1"><script src="./js/config.js?v=bridge-1" defer></script><script src="./js/connection.js?v=bridge-2" defer></script><script src="./js/app.js?v=beatloom-bridge-1" defer></script><script src="./js/vinyl.js?v=1" defer></script><script src="./js/youtube.js?v=bridge-1" defer></script>
+<link rel="stylesheet" href="./css/style.css?v=remote-1"><script src="./js/config.js?v=remote-1" defer></script><script src="./js/connection.js?v=remote-1" defer></script><script src="./js/app.js?v=beatloom-bridge-1" defer></script><script src="./js/vinyl.js?v=1" defer></script><script src="./js/youtube.js?v=bridge-1" defer></script>
 </head>
 <body>
 <div class="app-shell">
@@ -17,6 +17,7 @@
 <button class="nav-item" data-view="favorites"><span data-icon="heart"></span>Yêu thích<span class="nav-count" id="favorite-count">0</span></button>
 <button class="nav-item" data-view="recent"><span data-icon="clock"></span>Nghe gần đây</button>
 <button class="nav-item" id="youtube-open"><span data-icon="youtube"></span>Convert<span class="nav-count" id="youtube-count" hidden>0</span></button>
+<button class="nav-item" id="remote-open" hidden><span data-icon="wave"></span>Thiết bị khác</button>
 </nav>
 <div class="playlist-heading"><p class="nav-label">DANH SÁCH PHÁT</p><button class="icon-button" id="create-playlist" title="Tạo danh sách phát" data-icon="plus"></button></div>
 <div id="playlists" class="playlists"></div>
@@ -26,6 +27,12 @@
 <section id="connection-panel" class="connection-panel" aria-labelledby="connection-title" hidden>
 <div><h2 id="connection-title">Kết nối với BEATLOOM trên máy tính</h2><p id="connection-message">Mở Start BEATLOOM.command để sử dụng thư viện và chuyển đổi YouTube.</p></div>
 <div class="connection-actions"><a id="connection-link" class="button primary" href="http://127.0.0.1:3000/connect">Kết nối máy tính</a><button id="connection-retry" class="button outlined">Thử lại</button><a id="connection-local" class="button subtle" href="http://127.0.0.1:3000">Mở bản trên máy</a></div>
+<form id="remote-login" class="remote-login" hidden>
+<label class="field">Khóa truy cập<input id="remote-key" type="password" autocomplete="off" placeholder="Dán khóa truy cập của bạn" required></label>
+<button class="button primary" id="remote-submit" type="submit">Đăng nhập</button>
+<p id="remote-login-error" class="form-error" role="alert"></p>
+</form>
+<button id="remote-logout" class="button subtle" hidden>Đăng xuất thiết bị này</button>
 </section>
 <section class="hero" id="hero">
 <div class="hero-copy"><div class="eyebrow"><span class="tiny-line"></span> YOUR SOUND, YOUR SPACE</div><h1>Chạm vào<br><em>giai điệu của bạn.</em></h1><p>Những bản nhạc yêu thích. Những khoảnh khắc riêng. <br>Một không gian để bạn thả mình vào âm nhạc.</p><div class="hero-actions"><button class="button primary" data-upload><span data-icon="plus"></span>Thêm nhạc</button><button class="button subtle" id="hero-play"><span data-icon="play"></span>Phát thư viện</button></div></div>
@@ -55,6 +62,11 @@
 <div class="youtube-jobs-heading"><h3>Lượt chuyển đổi</h3><span id="youtube-summary" class="muted"></span></div>
 <div id="youtube-jobs" class="youtube-jobs" aria-live="polite"><p class="muted">Chưa có lượt chuyển đổi nào.</p></div>
 <p class="youtube-background muted">Bạn có thể đóng cửa sổ này và tiếp tục nghe nhạc trong lúc xử lý.</p>
+</dialog>
+<dialog id="remote-dialog" aria-labelledby="remote-title">
+<div class="dialog-heading"><h2 id="remote-title">BEATLOOM trên thiết bị khác</h2><button id="remote-close" type="button" class="icon-button" title="Đóng" data-icon="close"></button></div>
+<p id="remote-detail" class="muted">Đang kiểm tra đường kết nối…</p>
+<div id="remote-sharing" hidden><img id="remote-qr" width="280" height="280" alt="Quét mã để mở thư viện riêng trên điện thoại"><label class="field">Liên kết truy cập riêng<input id="remote-link" type="text" readonly></label><button id="remote-copy" class="button primary">Sao chép liên kết</button><p class="muted remote-note">Người có liên kết này có thể xem và quản lý thư viện. Chỉ dùng cho thiết bị của bạn.</p></div>
 </dialog>
 <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
 </body></html>

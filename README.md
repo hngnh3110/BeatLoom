@@ -1,3 +1,17 @@
+## Dùng Mac làm máy chủ cho điện thoại và máy khác
+
+1. Cài `cloudflared` bằng `brew install cloudflared` (Mac hiện tại đã được cài).
+2. Mở **Start BEATLOOM Remote.command**. Máy chủ cục bộ và kết nối HTTPS chạy nền.
+3. Trên Mac, vào `http://127.0.0.1:3000`, chọn **Thiết bị khác**, quét QR hoặc sao chép liên kết riêng sang thiết bị của bạn.
+4. QR mở GitHub Pages, kèm địa chỉ máy chủ và khóa trong fragment. Trình duyệt xóa fragment sau khi nhận và giữ khóa trong phiên. Không gửi khóa lên GitHub.
+5. **Stop BEATLOOM Remote.command** chỉ tắt kết nối từ xa; **Stop BEATLOOM.command** dừng cả máy chủ.
+
+Mac phải bật, có Internet và mở nắp. Tiến trình kết nối dùng `caffeinate` để ngăn ngủ do không thao tác; không ngăn tắt máy, ngủ thủ công hoặc đóng nắp. Chuyển đổi YouTube và dữ liệu đều nằm trên Mac, dùng chung trên các thiết bị đã kết nối.
+
+Cloudflare Quick Tunnel miễn phí, không cần tài khoản/thẻ, nhưng URL có thể đổi mỗi lần chạy lại và không cam kết độ ổn định. Khi đó quét QR mới: trang GitHub tự nhận địa chỉ mới mà không cần triển khai lại. Đường dẫn GitHub không kèm QR sẽ dùng địa chỉ mặc định trong `public/remote-server.json` hoặc địa chỉ đã nhận trong phiên trình duyệt. Muốn đổi mặc định, cập nhật JSON này rồi triển khai Pages.
+
+Liên kết QR cho phép quản lý toàn bộ thư viện, chỉ chia sẻ cho thiết bị của bạn. Khóa nằm tại `.logs/connection.key`, không đưa lên Git. Cổng 3000 chỉ phục vụ máy này; đường kết nối từ xa trỏ vào cổng 3001, luôn yêu cầu khóa cho API/thư viện và chặn các điểm cấp khóa. File nhạc dùng URL ký có thời hạn để hỗ trợ phát/tua.
+
 # BEATLOOM · Không gian âm nhạc của bạn
 
 Ứng dụng nghe nhạc cá nhân, giao diện tiếng Việt, chạy trên máy của bạn. Nhạc và danh sách phát được lưu cục bộ, không phụ thuộc dịch vụ nghe nhạc bên ngoài.

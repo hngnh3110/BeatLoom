@@ -1,6 +1,7 @@
 #!/bin/sh
 set -eu
 BEATLOOM_ROOT=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+"$BEATLOOM_ROOT/Stop BEATLOOM Remote.command"
 if [ ! -f "$BEATLOOM_ROOT/.logs/server.pid" ]; then
   echo 'Không có phiên BEATLOOM được khởi động bằng trình mở nhanh.'
   exit 0

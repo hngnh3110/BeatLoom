@@ -367,3 +367,5 @@ main{height:100%;padding:0 18px 25px}
 .connection-panel p{font-size:12px;color:#bbb;line-height:1.8;max-width:700px}
 .connection-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
 @media(max-width:700px){.connection-status{font-size:9px;padding:6px 8px}.connection-panel{padding:16px}.connection-actions .button{font-size:10px}.topbar-end .local-badge{display:none}}
+
+.remote-login{margin-top:18px;max-width:520px}.remote-login .field{display:block;margin-bottom:12px}#remote-dialog{max-height:calc(100dvh - 32px);overflow:auto}#remote-qr{display:block;max-width:100%;height:auto;margin:20px auto;background:white;border-radius:8px}#remote-sharing .field{display:block;margin:16px 0}#remote-link{width:100%;font-size:12px}.remote-note{font-size:12px;line-height:1.7;margin-top:16px}#remote-detail{line-height:1.7;font-size:13px}
